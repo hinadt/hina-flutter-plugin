@@ -23,7 +23,7 @@ class HinaFlutterPlugin {
     _channel.invokeMethod('track', params);
   }
 
-  Future<String?> getPlatformVersion() {
+  static Future<String?> getPlatformVersion() {
     return _channel.invokeMethod<String>('getPlatformVersion');
   }
 }

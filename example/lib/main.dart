@@ -17,12 +17,22 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  final _hinaFlutterPlugin = HinaFlutterPlugin();
+
+  // final _hinaFlutterPlugin = HinaFlutterPlugin();
 
   @override
   void initState() {
     super.initState();
+    HinaFlutterPlugin.init(
+        serverUrl: "https://loanetc.mandao.com/hn?token=BHRfsTQS",
+        flushInterval: 5000,
+        flushBulkSize: 1,
+        enableLog: true);
+    //
     initPlatformState();
+    //
+    HinaFlutterPlugin.track('eventname',
+        {'ProductID': '123456', 'ProductCatalog': 'Laptop Computer'});
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -31,8 +41,8 @@ class _MyAppState extends State<MyApp> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      platformVersion =
-          await _hinaFlutterPlugin.getPlatformVersion() ?? 'Unknown platform version';
+      platformVersion = await HinaFlutterPlugin.getPlatformVersion() ??
+          'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
