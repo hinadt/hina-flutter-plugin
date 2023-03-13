@@ -12,6 +12,10 @@
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
   if ([@"getPlatformVersion" isEqualToString:call.method]) {
     result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
+  } else if ([@"track" isEqualToString:call.method]) {
+    NSString* event = arguments[0];
+    NSDictionary* properties = arguments[1];
+    [[HinaCloudSDK sharedInstance] track:event properties:properties];
   } else {
     result(FlutterMethodNotImplemented);
   }

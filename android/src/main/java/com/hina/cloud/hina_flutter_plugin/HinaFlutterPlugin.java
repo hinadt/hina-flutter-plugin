@@ -2,6 +2,13 @@ package com.hina.cloud.hina_flutter_plugin;
 
 import androidx.annotation.NonNull;
 
+import com.hinacloud.analytics.HinaCloudSDK;
+
+import org.json.JSONObject;
+
+import java.util.List;
+import java.util.Map;
+
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -24,8 +31,11 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler {
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-    if (call.method.equals("getPlatformVersion")) {
+    List list = ((List)call.arguments());
+    if (call.method.equals("init")) {
       result.success("Android " + android.os.Build.VERSION.RELEASE);
+    } else if (call.method.equals("track")) {
+      HinaCloudSDK.getInstance().track((String)list.get(0), (JSONObject) list.get(1));
     } else {
       result.notImplemented();
     }
