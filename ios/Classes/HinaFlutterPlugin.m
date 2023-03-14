@@ -1,4 +1,5 @@
 #import "HinaFlutterPlugin.h"
+// #import "HinaCloudSDK.h"
 #import <objc/runtime.h>
 
 @implementation HinaFlutterPlugin
@@ -21,7 +22,7 @@
         NSDictionary* properties = arguments[1];
         // argumentSetNSNullToNil(&properties);
 
-       [[HinaCloudSDK sharedInstance] track:event properties:properties];
+    //    [[HinaCloudSDK sharedInstance] track:event properties:properties];
         NSLog(@"---2222--%@",properties);
         result(nil);
         
@@ -32,7 +33,7 @@
         NSDictionary *config = arguments[0];
         // argumentSetNSNullToNil(&config);
 
-       [[HinaCloudSDK sharedInstance] startWithConfig:config];
+    //    [[HinaCloudSDK sharedInstance] startWithConfig:config];
         
         
         NSLog(@"---111--%@",config);
