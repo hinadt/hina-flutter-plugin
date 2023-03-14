@@ -1,0 +1,6 @@
+framework module HinaCloudSDK {
+  umbrella header "HinaCloudSDK.h"
+
+  export *
+  module * { export * }
+}
