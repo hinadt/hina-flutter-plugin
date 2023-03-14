@@ -24,6 +24,9 @@ rootProject.allprojects {
             allowInsecureProtocol = true
             url 'http://10.0.20.242/nexus/content/repositories/snapshots/'
         }
+        flatDir {
+            dirs project(':hina_flutter_plugin').file('libs')
+        }
     }
 }
 
@@ -42,7 +45,14 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
-    api 'com.hinacloud.analytics:HinaCloudSDK:1.0.0-SNAPSHOT'
+      api (name:'HinaCloudSDK-All-1.0.0', ext:'aar')
+//    api 'com.hinacloud.analytics:HinaCloudSDK:1.0.0-SNAPSHOT'
 //    compileOnly files("$flutterRoot/bin/cache/artifacts/engine/android-arm/flutter.jar")
 }
