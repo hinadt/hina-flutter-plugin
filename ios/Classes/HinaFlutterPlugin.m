@@ -92,6 +92,7 @@
 //#import "SAFlutterGlobalPropertyPlugin.h"
 #import <objc/runtime.h>
 
+static NSString* const HinaFlutterPluginMethodGetPlatformVersion = @"getPlatformVersion";
 static NSString* const HinaFlutterPluginMethodTrack = @"track";
 static NSString* const HinaFlutterPluginMethodTrackTimerStart = @"trackTimerStart";
 static NSString* const HinaFlutterPluginMethodTrackTimerEnd = @"trackTimerEnd";
@@ -99,7 +100,7 @@ static NSString* const HinaFlutterPluginMethodTrackTimerClear = @"clearTrackTime
 static NSString* const HinaFlutterPluginMethodTrackInstallation = @"trackInstallation";
 static NSString* const HinaFlutterPluginMethodTrackViewScreenWithUrl = @"trackViewScreen";
 
-static NSString* const HinaFlutterPluginMethodLogin = @"login";
+static NSString* const HinaFlutterPluginMethodLogin = @"setUserUId";
 static NSString* const HinaFlutterPluginMethodLogout = @"logout";
 static NSString* const HinaFlutterPluginMethodBind = @"bind";
 static NSString* const HinaFlutterPluginMethodUnbind = @"unbind";
@@ -107,17 +108,17 @@ static NSString* const HinaFlutterPluginMethodLoginWithKey = @"loginWithKey";
 static NSString* const HinaFlutterPluginMethodGetDistincsId = @"getDistinctId";
 static NSString* const HinaFlutterPluginMethodClearKeychainData = @"clearKeychainData";
 
-static NSString* const HinaFlutterPluginMethodProfileSet = @"profileSet";
-static NSString* const HinaFlutterPluginMethodProfileSetOnce = @"profileSetOnce";
-static NSString* const HinaFlutterPluginMethodProfileUnset = @"profileUnset";
-static NSString* const HinaFlutterPluginMethodProfileIncrement = @"profileIncrement";
-static NSString* const HinaFlutterPluginMethodProfileAppend = @"profileAppend";
-static NSString* const HinaFlutterPluginMethodProfileDelete = @"profileDelete";
+static NSString* const HinaFlutterPluginMethodProfileSet = @"userSet";
+static NSString* const HinaFlutterPluginMethodProfileSetOnce = @"userSetOnce";
+static NSString* const HinaFlutterPluginMethodProfileUnset = @"userUnset";
+static NSString* const HinaFlutterPluginMethodProfileIncrement = @"userAdd";
+static NSString* const HinaFlutterPluginMethodProfileAppend = @"userAppend";
+static NSString* const HinaFlutterPluginMethodProfileDelete = @"userDelete";
 
 static NSString* const HinaFlutterPluginMethodRegisterSuperProperties = @"registerSuperProperties";
 static NSString* const HinaFlutterPluginMethodUnregisterSuperProperty = @"unregisterSuperProperty";
 static NSString* const HinaFlutterPluginMethodClearSuperProperties = @"clearSuperProperties";
-static NSString* const HinaFlutterPluginMethodProfilePushKey = @"profilePushId";
+static NSString* const HinaFlutterPluginMethodProfilePushKey = @"setPushUId";
 static NSString* const HinaFlutterPluginMethodProfileUnsetPushKey = @"profileUnsetPushId";
 static NSString* const HinaFlutterPluginMethodInit = @"init";
 
@@ -187,11 +188,15 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
     }
 }
 
+
+#pragma mark - Flutter 调用接口
 /// Flutter 调用接口
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-    NSString* method = call.method;
-    NSArray* arguments = (NSArray *)call.arguments;
-    if([method isEqualToString:HinaFlutterPluginMethodTrack]){
+    NSString *method = call.method;
+    NSArray *arguments = (NSArray *)call.arguments;
+    if ([method isEqualToString:HinaFlutterPluginMethodGetPlatformVersion]) {
+        result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
+    }else if([method isEqualToString:HinaFlutterPluginMethodTrack]){
         NSString* event = arguments[0];
         argumentSetNSNullToNil(&event);
         NSDictionary* properties = arguments[1];
@@ -277,11 +282,14 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
         [self profileUnset:profile];
         result(nil);
     }else if ([method isEqualToString:HinaFlutterPluginMethodProfileIncrement]){
-        NSString *profile = arguments[0];
-        argumentSetNSNullToNil(&profile);
-        NSNumber *amount = arguments[1];
-        argumentSetNSNullToNil(&amount);
-        [self profileIncrement:profile by:amount];
+        //        NSString *profile = arguments[0];
+        //        argumentSetNSNullToNil(&profile);
+        //        NSNumber *amount = arguments[1];
+        //        argumentSetNSNullToNil(&amount);
+        //        [self profileIncrement:profile by:amount];
+        NSDictionary *properties = arguments[0];
+        argumentSetNSNullToNil(&properties);
+        [HinaCloudSDK.sharedInstance add:properties];
         result(nil);
     }else if ([method isEqualToString:HinaFlutterPluginMethodProfileAppend]){
         NSString *profile = arguments[0];
@@ -352,13 +360,13 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
         result(nil);
     } else if([method isEqualToString:@"getFlushBulkSize"]){
         result(@([self getFlushBulkSize]));
-    } else if ([method isEqualToString:@"getAnonymousId"]){
+    } else if ([method isEqualToString:@"getDeviceUId"]){
         NSString *anonymousId = [self getAnonymousId];
         result(anonymousId);
     }  else if ([method isEqualToString:@"getLoginId"]){
         NSString *loginId = [self getLoginId];
         result(loginId);
-    }  else if ([method isEqualToString:@"identify"]){
+    }  else if ([method isEqualToString:@"setDeviceUId"]){
         NSString *distinctId = arguments[0];
         argumentSetNSNullToNil(&distinctId);
         [self identify:distinctId];
@@ -388,7 +396,7 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
     }  else if ([method isEqualToString:@"flush"]){
         [self flush];
         result(nil);
-    }  else if ([method isEqualToString:@"deleteAll"]){
+    }  else if ([method isEqualToString:@"clear"]){
         [self deleteAll];
         result(nil);
     }  else if ([method isEqualToString:@"getSuperProperties"]){
@@ -431,10 +439,33 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
         // 发送 Flutter 页面元素信息
         [self invokeSABridgeWithMethod:method arguments:arguments];
         result(nil);
-    } else {
+    }
+    
+    // ---------新增-----
+    else if ([method isEqualToString:@"registerCommonProperties"]){
+        //        NSString* event = arguments[0];
+        //        argumentSetNSNullToNil(&event);
+        NSDictionary* properties = arguments[0];
+        argumentSetNSNullToNil(&properties);
+        [HinaCloudSDK.sharedInstance registerCommonProperties:^NSDictionary<NSString *,id> * _Nonnull{
+            return properties;
+        }];
+        result(nil);
+    }
+    
+    
+    
+    
+    
+    
+    else {
         result(FlutterMethodNotImplemented);
     }
 }
+
+#pragma mark - 调用 HinaCloudSDK 接口 新增====🔽
+
+#pragma mark - 调用 HinaCloudSDK 接口 新增====🔼
 
 /// 动态调用 SA 接口
 - (id)invokeSABridgeWithMethod:(NSString *)methodString arguments:(NSArray *)arguments {
@@ -484,6 +515,9 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
     return nil;
 }
 
+
+
+#pragma mark - 调用 HinaCloudSDK 接口
 -(void)track:(NSString *)event properties:(nullable NSDictionary *)properties{
     [HinaCloudSDK.sharedInstance track:event withProperties:properties];
 }
@@ -704,7 +738,7 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
     if ([autoTrack isKindOfClass:[NSNumber class]]) {
         options.autoTrackEventType = [autoTrack integerValue];
     }
-    NSNumber *networkTypes = config[@"networkTypes"];
+    NSNumber *networkTypes = config[@"networkTypePolicy"];
     if ([networkTypes isKindOfClass:[NSNumber class]]) {
         options.flushNetworkPolicy = [networkTypes integerValue];
     }
@@ -734,8 +768,8 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
     }
     
     NSDictionary *iOSConfigs = config[@"ios"];
-    if ([iOSConfigs isKindOfClass:[NSDictionary class]] && [iOSConfigs[@"maxCacheSize"] isKindOfClass:[NSNumber class]]) {
-        options.maxCacheSize = [iOSConfigs[@"maxCacheSize"] integerValue];
+    if ([iOSConfigs isKindOfClass:[NSDictionary class]] && [iOSConfigs[@"maxCacheSizeForIOS"] isKindOfClass:[NSNumber class]]) {
+        options.maxCacheSize = [iOSConfigs[@"maxCacheSizeForIOS"] integerValue];
     }
     
     NSNumber *enableHeatMap = config[@"heat_map"];
