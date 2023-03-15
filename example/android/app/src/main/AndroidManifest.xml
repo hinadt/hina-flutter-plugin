@@ -1,9 +1,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.hina.cloud.hina_flutter_plugin_example">
+    <!-- 必须权限，允许应用访问网络，SDK 发送埋点数据需要此权限-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 必须权限，允许应用检测网络状态，SDK 会根据网络状态选择是否发送数据-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 可选权限，允许应用获取设备 IMEI，采用 App 内推广和采集运营商属性时会用到此权限-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 可选权限，允许应用获取 MAC 地址，采用 App 内推广时会用到此权限-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
    <application
         android:label="hina_flutter_plugin_example"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+       android:networkSecurityConfig="@xml/network_security_config"
+       android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:exported="true"

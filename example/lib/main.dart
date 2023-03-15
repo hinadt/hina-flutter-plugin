@@ -32,6 +32,8 @@ class _MyAppState extends State<MyApp> {
     initPlatformState();
     //
     HinaFlutterPlugin.registerCommonProperties({'app_name': '张三啦啦啦'});
+    HinaFlutterPlugin.setDeviceUId("dedededededede");
+    HinaFlutterPlugin.setUserUId("1234567890");
     HinaFlutterPlugin.track('eventname',
         {'ProductID': '123456', 'ProductCatalog': 'Laptop Computer'});
   }
