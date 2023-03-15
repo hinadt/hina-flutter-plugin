@@ -154,11 +154,6 @@ class HinaFlutterPlugin {
     _channel.invokeMethod("clear");
   }
 
-  // static void enableNetworkRequest(bool enable) {
-  //   List<bool> params = [enable];
-  //   _channel.invokeMethod("enableNetworkRequest", params);
-  // }
-
   static Future<String?> getPlatformVersion() async {
     return await _channel.invokeMethod<String>('getPlatformVersion');
   }

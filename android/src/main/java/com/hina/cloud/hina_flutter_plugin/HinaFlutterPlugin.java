@@ -1,10 +1,8 @@
 package com.hina.cloud.hina_flutter_plugin;
 
 import android.app.Activity;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.hinacloud.analytics.HinaCloudSDK;
 import com.hinacloud.analytics.ICommonProperties;
@@ -111,9 +109,6 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
                 break;
             case "clear":
                 clear();
-                break;
-            case "enableNetworkRequest":
-                enableNetworkRequest(list);
                 break;
             default:
                 result.notImplemented();
@@ -247,8 +242,7 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
         if (list == null) {
             return;
         }
-        JSONObject properties = assertProperties((Map) list.get(0));
-        HinaCloudSDK.getInstance().userSetOnce(properties);
+        HinaCloudSDK.getInstance().userAdd((Map<String, ? extends Number>) list.get(0));
     }
 
     private void userAppend(List list) {
@@ -335,14 +329,6 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
 
     private void clear() {
         HinaCloudSDK.getInstance().clear();
-    }
-
-    private void enableNetworkRequest(List list) {
-        if (list == null) {
-            return;
-        }
-        boolean enable = (boolean) list.get(0);
-        HinaCloudSDK.getInstance().enableNetworkRequest(enable);
     }
 
     @Override
