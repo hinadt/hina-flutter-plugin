@@ -26,11 +26,12 @@ class _MyAppState extends State<MyApp> {
     HinaFlutterPlugin.init(
         serverUrl: "https://loanetc.mandao.com/hn?token=BHRfsTQS",
         flushInterval: 5000,
-        flushBulkSize: 1,
+        flushPendSize: 1,
         enableLog: true);
     //
     initPlatformState();
     //
+    HinaFlutterPlugin.registerCommonProperties({'app_name': '张三啦啦啦'});
     HinaFlutterPlugin.track('eventname',
         {'ProductID': '123456', 'ProductCatalog': 'Laptop Computer'});
   }

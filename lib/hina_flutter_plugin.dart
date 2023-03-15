@@ -1,5 +1,15 @@
 import 'package:flutter/services.dart';
 
+enum HANetworkType {
+  TYPE_NONE,
+  TYPE_2G,
+  TYPE_3G,
+  TYPE_4G,
+  TYPE_WIFI,
+  TYPE_5G,
+  TYPE_ALL
+}
+
 class HinaFlutterPlugin {
   static MethodChannel get _channel =>
       ChannelManager.getInstance().methodChannel;
@@ -7,14 +17,25 @@ class HinaFlutterPlugin {
   static Future<void> init(
       {required String? serverUrl,
       int flushInterval = 15000,
-      int flushBulkSize = 100,
-      bool enableLog = false}) async {
+      int flushPendSize = 100,
+      bool enableLog = false,
+      bool enableJSBridge = false,
+      int maxCacheSizeForAndroid = 32 * 1024 * 1024,
+      int maxCacheSizeForIOS = 10000,
+      Set<HANetworkType>? networkTypeList}) async {
     Map<String, dynamic> initConfig = {
       "serverUrl": serverUrl,
-      "enableLog": enableLog,
       "flushInterval": flushInterval,
-      "flushBulkSize": flushBulkSize,
+      "flushPendSize": flushPendSize,
+      "enableLog": enableLog,
+      "enableJSBridge": enableJSBridge,
+      "maxCacheSizeForAndroid": maxCacheSizeForAndroid,
+      "maxCacheSizeForIOS": maxCacheSizeForIOS
     };
+    int networkTypePolicy = getNetworkTypes(networkTypeList);
+    if (networkTypePolicy != -1) {
+      initConfig["networkTypePolicy"] = networkTypePolicy;
+    }
     List<dynamic> params = [initConfig];
     await _channel.invokeMethod("init", params);
   }
@@ -117,6 +138,14 @@ class HinaFlutterPlugin {
     _channel.invokeMethod("setFlushInterval", params);
   }
 
+  static void setFlushNetworkPolicy(Set<HANetworkType>? networkTypeList) {
+    int networkTypePolicy = getNetworkTypes(networkTypeList);
+    if (networkTypePolicy != -1) {
+      List<int> params = [networkTypePolicy];
+      _channel.invokeMethod("setFlushNetworkPolicy", params);
+    }
+  }
+
   static void flush() {
     _channel.invokeMethod("flush");
   }
@@ -125,8 +154,47 @@ class HinaFlutterPlugin {
     _channel.invokeMethod("clear");
   }
 
+  static void enableNetworkRequest(bool enable) {
+    List<bool> params = [enable];
+    _channel.invokeMethod("enableNetworkRequest", params);
+  }
+
   static Future<String?> getPlatformVersion() async {
     return await _channel.invokeMethod<String>('getPlatformVersion');
+  }
+
+  static int getNetworkTypes(Set<HANetworkType>? networkTypeList) {
+    if (networkTypeList != null && networkTypeList.isNotEmpty) {
+      int result = 0;
+      networkTypeList.forEach((element) {
+        switch (element) {
+          case HANetworkType.TYPE_NONE:
+            result |= 0;
+            break;
+          case HANetworkType.TYPE_2G:
+            result |= 1;
+            break;
+          case HANetworkType.TYPE_3G:
+            result |= 1 << 1;
+            break;
+          case HANetworkType.TYPE_4G:
+            result |= 1 << 2;
+            break;
+          case HANetworkType.TYPE_5G:
+            result |= 1 << 4;
+            break;
+          case HANetworkType.TYPE_WIFI:
+            result |= 1 << 3;
+            break;
+          case HANetworkType.TYPE_ALL:
+            result |= 0xFF;
+            break;
+        }
+      });
+      return result;
+    } else {
+      return -1;
+    }
   }
 }
 

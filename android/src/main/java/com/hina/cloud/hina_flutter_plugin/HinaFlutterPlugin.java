@@ -1,10 +1,13 @@
 package com.hina.cloud.hina_flutter_plugin;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.hinacloud.analytics.HinaCloudSDK;
+import com.hinacloud.analytics.ICommonProperties;
 
 import org.json.JSONObject;
 
@@ -32,6 +35,7 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
     /// when the Flutter Engine is detached from the Activity
     private MethodChannel channel;
     private Activity mActivity;
+
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "hina_flutter_plugin");
@@ -46,7 +50,7 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
                 result.success("Android " + android.os.Build.VERSION.RELEASE);
                 break;
             case "init":
-                init(list);
+                init(list, result);
                 break;
             case "track":
                 track(list);
@@ -59,6 +63,9 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
                 break;
             case "getPresetProperties":
                 getPresetProperties(result);
+                break;
+            case "registerCommonProperties":
+                registerCommonProperties(list);
                 break;
             case "userSet":
                 userSet(list);
@@ -96,11 +103,17 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
             case "setFlushInterval":
                 setFlushInterval(list);
                 break;
+            case "setFlushNetworkPolicy":
+                setFlushNetworkPolicy(list);
+                break;
             case "flush":
                 flush();
                 break;
             case "clear":
                 clear();
+                break;
+            case "enableNetworkRequest":
+                enableNetworkRequest(list);
                 break;
             default:
                 result.notImplemented();
@@ -108,22 +121,54 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
         }
     }
 
-    private void init(List list) {
-        if (list == null) {
-            return;
-        }
-        Map<String, Object> map = (Map) list.get(0);
-        String serverUrl = (String) map.get("serverUrl");
-        int flushInterval = (int) map.get("flushInterval");
-        int flushBulkSize = (int) map.get("flushBulkSize");
-        boolean enableLog = (boolean) map.get("enableLog");
+    private void init(List list, Result result) {
+        try {
+            Map map = (Map) list.get(0);
+            Object serverUrl = map.get("serverUrl");
+            Object flushInterval = map.get("flushInterval");
+            Object flushPendSize = map.get("flushPendSize");
+            Object enableLog = map.get("enableLog");
+            Object enableJSBridge = map.get("enableJSBridge");
+            Object maxCacheSizeForAndroid = map.get("maxCacheSizeForAndroid");
+            Object networkTypePolicy = map.get("networkTypePolicy");
 
-        new HinaCloudSDK.Builder()
-                .enableLog(enableLog)
-                .setServerUrl(serverUrl)
-                .setFlushInterval(flushInterval)
-                .setFlushPendSize(flushBulkSize)
-                .build(mActivity);
+            HinaCloudSDK.Builder builder = new HinaCloudSDK.Builder();
+
+            if (serverUrl != null) {
+                builder.setServerUrl((String) serverUrl);
+            }
+
+            if (flushInterval != null) {
+                builder.setFlushInterval((Integer) flushInterval);
+            }
+
+            if (flushPendSize != null) {
+                builder.setFlushPendSize((Integer) flushPendSize);
+            }
+
+            if (enableLog != null) {
+                builder.enableLog((Boolean) enableLog);
+            }
+
+            if (enableJSBridge != null) {
+                builder.enableJSBridge((Boolean) enableJSBridge);
+            }
+
+            if (maxCacheSizeForAndroid != null) {
+                builder.setMaxCacheSize(Long.parseLong(maxCacheSizeForAndroid.toString()));
+            }
+
+            if (networkTypePolicy != null) {
+                builder.setNetworkTypePolicy((Integer) networkTypePolicy);
+            }
+
+            builder.build(mActivity);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //
+        result.success(null);
     }
 
     private void track(List list) {
@@ -166,6 +211,20 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
         } else {
             result.success(null);
         }
+    }
+
+    private void registerCommonProperties(List list) {
+        if (list == null) {
+            return;
+        }
+        final JSONObject properties = assertProperties((Map) list.get(0));
+        HinaCloudSDK.getInstance().registerCommonProperties(new ICommonProperties() {
+            @Override
+            public JSONObject getCommonProperties() {
+                return properties;
+            }
+        });
+
     }
 
     private void userSet(List list) {
@@ -262,12 +321,28 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
         HinaCloudSDK.getInstance().setFlushInterval(intervalTime);
     }
 
+    private void setFlushNetworkPolicy(List list) {
+        if (list == null) {
+            return;
+        }
+        int networkTypePolicy = (int) list.get(0);
+        HinaCloudSDK.getInstance().setFlushNetworkPolicy(networkTypePolicy);
+    }
+
     private void flush() {
         HinaCloudSDK.getInstance().flush();
     }
 
     private void clear() {
         HinaCloudSDK.getInstance().clear();
+    }
+
+    private void enableNetworkRequest(List list) {
+        if (list == null) {
+            return;
+        }
+        boolean enable = (boolean) list.get(0);
+        HinaCloudSDK.getInstance().enableNetworkRequest(enable);
     }
 
     @Override
@@ -295,11 +370,11 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
 
     @Override
     public void onReattachedToActivityForConfigChanges(@NonNull ActivityPluginBinding binding) {
-
+        mActivity = binding.getActivity();
     }
 
     @Override
     public void onDetachedFromActivity() {
-
+        mActivity = null;
     }
 }
