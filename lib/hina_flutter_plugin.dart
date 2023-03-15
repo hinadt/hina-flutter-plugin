@@ -15,7 +15,8 @@ class HinaFlutterPlugin {
       "flushInterval": flushInterval,
       "flushBulkSize": flushBulkSize,
     };
-    await _channel.invokeMethod("init", [initConfig]);
+    List<dynamic> params = [initConfig];
+    await _channel.invokeMethod("init", params);
   }
 
   static void track(String eventName, Map<String, dynamic>? properties) {
@@ -73,8 +74,9 @@ class HinaFlutterPlugin {
     _channel.invokeMethod("userAdd", params);
   }
 
-  static void userAppend(String key, List<String> values) {
-    _channel.invokeMethod("userAppend", [key, values]);
+  static void userAppend(String key, Set<String> values) {
+    List<dynamic> params = [key, values];
+    _channel.invokeMethod("userAppend", params);
   }
 
   static void userUnset(String key) {
@@ -92,9 +94,7 @@ class HinaFlutterPlugin {
   }
 
   static void setPushUId(String pushTypeKey, String pushUId) {
-    List<Map<String, String>> params = [
-      {pushTypeKey: pushUId}
-    ];
+    List<String> params = [pushTypeKey, pushUId];
     _channel.invokeMethod("setPushUId", params);
   }
 
@@ -123,25 +123,6 @@ class HinaFlutterPlugin {
 
   static void clear() {
     _channel.invokeMethod("clear");
-  }
-
-  static void enableTrackScreenOrientation(bool enable) {
-    List<bool> params = [enable];
-    _channel.invokeMethod("enableTrackScreenOrientation", params);
-  }
-
-  static void enableTrackAppCrash() {
-    _channel.invokeMethod("enableTrackAppCrash");
-  }
-
-  static void enableLog(bool enable) {
-    List<bool> params = [enable];
-    _channel.invokeMethod("enableLog", params);
-  }
-
-  static void disableSDK(bool enable) {
-    List<bool> params = [enable];
-    _channel.invokeMethod("disableSDK", params);
   }
 
   static Future<String?> getPlatformVersion() async {
