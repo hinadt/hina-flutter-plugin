@@ -18,7 +18,6 @@
 		FA7106DD29C050B2005488D0 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7106DC29C050B2005488D0 /* libicucore.tbd */; };
 		FA7106DF29C050BB005488D0 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7106DE29C050BB005488D0 /* libsqlite3.tbd */; };
 		FA7106E129C050C6005488D0 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = FA7106E029C050C6005488D0 /* libz.tbd */; };
-		FA874AF029C051C1008DC9B8 /* HinaCloudSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA874AEF29C051C1008DC9B8 /* HinaCloudSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -56,7 +55,6 @@
 		FA7106DC29C050B2005488D0 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		FA7106DE29C050BB005488D0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		FA7106E029C050C6005488D0 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
-		FA874AEF29C051C1008DC9B8 /* HinaCloudSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HinaCloudSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,7 +62,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA874AF029C051C1008DC9B8 /* HinaCloudSDK.framework in Frameworks */,
 				FA7106E129C050C6005488D0 /* libz.tbd in Frameworks */,
 				FA7106DF29C050BB005488D0 /* libsqlite3.tbd in Frameworks */,
 				FA7106DD29C050B2005488D0 /* libicucore.tbd in Frameworks */,
@@ -154,7 +151,6 @@
 		FA7106E229C050FF005488D0 /* lib */ = {
 			isa = PBXGroup;
 			children = (
-				FA874AEF29C051C1008DC9B8 /* HinaCloudSDK.framework */,
 			);
 			name = lib;
 			sourceTree = "<group>";
