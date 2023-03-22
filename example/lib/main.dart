@@ -71,8 +71,7 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Center(
           child: Scrollbar(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: ListView(
               children: <Widget>[
                 const Text(
                   'test only',
