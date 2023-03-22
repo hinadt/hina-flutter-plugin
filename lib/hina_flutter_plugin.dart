@@ -10,6 +10,14 @@ enum HANetworkType {
   TYPE_ALL
 }
 
+enum HAAutoTrackType {
+  TYPE_NONE,
+  APP_START,
+  APP_END,
+  APP_CLICK,
+  APP_VIEW_SCREEN
+}
+
 class HinaFlutterPlugin {
   static MethodChannel get _channel =>
       ChannelManager.getInstance().methodChannel;
@@ -22,6 +30,7 @@ class HinaFlutterPlugin {
       bool enableJSBridge = false,
       int maxCacheSizeForAndroid = 32 * 1024 * 1024,
       int maxCacheSizeForIOS = 10000,
+      Set<HAAutoTrackType>? autoTrackTypeList,
       Set<HANetworkType>? networkTypeList}) async {
     Map<String, dynamic> initConfig = {
       "serverUrl": serverUrl,
@@ -32,6 +41,10 @@ class HinaFlutterPlugin {
       "maxCacheSizeForAndroid": maxCacheSizeForAndroid,
       "maxCacheSizeForIOS": maxCacheSizeForIOS
     };
+    int autoTrackTypePolicy = getAutoTrackTypes(autoTrackTypeList);
+    if (autoTrackTypePolicy != -1) {
+      initConfig["autoTrackTypePolicy"] = autoTrackTypePolicy;
+    }
     int networkTypePolicy = getNetworkTypes(networkTypeList);
     if (networkTypePolicy != -1) {
       initConfig["networkTypePolicy"] = networkTypePolicy;
@@ -158,10 +171,38 @@ class HinaFlutterPlugin {
     return await _channel.invokeMethod<String>('getPlatformVersion');
   }
 
+  static int getAutoTrackTypes(Set<HAAutoTrackType>? autoTrackTypeList) {
+    if (autoTrackTypeList != null && autoTrackTypeList.isNotEmpty) {
+      int result = 0;
+      for (var element in autoTrackTypeList) {
+        switch (element) {
+          case HAAutoTrackType.TYPE_NONE:
+            result |= 0;
+            break;
+          case HAAutoTrackType.APP_START:
+            result |= 1;
+            break;
+          case HAAutoTrackType.APP_END:
+            result |= 1 << 1;
+            break;
+          case HAAutoTrackType.APP_CLICK:
+            result |= 1 << 2;
+            break;
+          case HAAutoTrackType.APP_VIEW_SCREEN:
+            result |= 1 << 3;
+            break;
+        }
+      }
+      return result;
+    } else {
+      return -1;
+    }
+  }
+
   static int getNetworkTypes(Set<HANetworkType>? networkTypeList) {
     if (networkTypeList != null && networkTypeList.isNotEmpty) {
       int result = 0;
-      networkTypeList.forEach((element) {
+      for (var element in networkTypeList) {
         switch (element) {
           case HANetworkType.TYPE_NONE:
             result |= 0;
@@ -185,7 +226,7 @@ class HinaFlutterPlugin {
             result |= 0xFF;
             break;
         }
-      });
+      }
       return result;
     } else {
       return -1;

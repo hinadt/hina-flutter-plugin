@@ -125,6 +125,7 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
             Object enableLog = map.get("enableLog");
             Object enableJSBridge = map.get("enableJSBridge");
             Object maxCacheSizeForAndroid = map.get("maxCacheSizeForAndroid");
+            Object autoTrackTypePolicy = map.get("autoTrackTypePolicy");
             Object networkTypePolicy = map.get("networkTypePolicy");
 
             HinaCloudSDK.Builder builder = new HinaCloudSDK.Builder();
@@ -151,6 +152,10 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
 
             if (maxCacheSizeForAndroid != null) {
                 builder.setMaxCacheSize(Long.parseLong(maxCacheSizeForAndroid.toString()));
+            }
+
+            if (autoTrackTypePolicy != null) {
+                builder.setAutoTrackEventType((Integer) autoTrackTypePolicy);
             }
 
             if (networkTypePolicy != null) {

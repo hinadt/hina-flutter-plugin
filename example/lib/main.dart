@@ -27,7 +27,11 @@ class _MyAppState extends State<MyApp> {
         serverUrl: "https://loanetc.mandao.com/hn?token=BHRfsTQS",
         flushInterval: 5000,
         flushPendSize: 1,
-        enableLog: true);
+        enableLog: true,
+        autoTrackTypeList: {
+          HAAutoTrackType.APP_START,
+          HAAutoTrackType.APP_END
+        });
     //
     initPlatformState();
     //
