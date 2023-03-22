@@ -17,6 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
+  Map<String, dynamic>? _presetProperties = {};
 
   // final _hinaFlutterPlugin = HinaFlutterPlugin();
 
@@ -36,10 +37,7 @@ class _MyAppState extends State<MyApp> {
     initPlatformState();
     //
     HinaFlutterPlugin.registerCommonProperties({'app_name': '张三啦啦啦'});
-    HinaFlutterPlugin.setDeviceUId("dedededededede");
-    HinaFlutterPlugin.setUserUId("1234567890");
-    HinaFlutterPlugin.track('eventname',
-        {'ProductID': '123456', 'ProductCatalog': 'Laptop Computer'});
+
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -72,6 +70,7 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
+          child: Scrollbar(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -82,15 +81,57 @@ class _MyAppState extends State<MyApp> {
                   'Run on $_platformVersion',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
+                Text(
+                  'preSetProperties == $_presetProperties',
+                ),
+                TextButton(onPressed: _buttonGetPresetProperties, child: Text('preSetProperties')),
+                TextButton(onPressed: _buttonSetDeviceUId, child: const Text('set userUId == dededededededede')),
+                TextButton(onPressed: _buttonSetUserUId, child: const Text('set userUId == 1234567890')),
+                TextButton(onPressed: _buttonTrack, child: const Text('track')),
+                TextButton(onPressed: _buttonTrackTimerStart, child: const Text('track timer start')),
+                TextButton(onPressed: _buttonTrackTimerEnd, child: const Text('track timer end')),
                 TextButton(onPressed: _buttonSet, child: const Text('userSet')),
                 TextButton(onPressed: _buttonSetOnce, child: const Text('userSetOnce')),
                 TextButton(onPressed: _buttonAdd, child: const Text('userAdd')),
                 TextButton(onPressed: _buttonAppend, child: const Text('userAppend')),
-                TextButton(onPressed: _buttonUnset, child: const Text('setUnset')),
+                TextButton(onPressed: _buttonUnset, child: const Text('userUnset')),
+                TextButton(onPressed: _buttonDelete, child: const Text('userDelete')),
+                TextButton(onPressed: _buttonFlush, child: const Text('flush')),
+                TextButton(onPressed: _buttonClear, child: const Text('clear')),
               ],
-        )),
+        ))),
+
       ),
     );
+  }
+  void _buttonGetPresetProperties() async {
+    var result = await HinaFlutterPlugin.getPresetProperties();
+    setState(() {
+      _presetProperties = result;
+    });
+  }
+
+  void _buttonSetDeviceUId() {
+    HinaFlutterPlugin.setDeviceUId('dededededededede');
+  }
+
+  void _buttonSetUserUId() {
+    HinaFlutterPlugin.setUserUId('1234567890');
+  }
+
+  void _buttonTrack() {
+    HinaFlutterPlugin.track('clickPro',
+        {'ProductID': '123456', 'ProductCatalog': 'Laptop Computer'});
+  }
+
+  void _buttonTrackTimerStart() {
+    HinaFlutterPlugin.trackTimerStart("dingo");
+  }
+
+  void _buttonTrackTimerEnd() {
+    var p = <String, dynamic>{};
+    p["from"] = 'black';
+    HinaFlutterPlugin.trackTimerEnd('dingo', p);
   }
 
   void _buttonSet() {
@@ -118,5 +159,17 @@ class _MyAppState extends State<MyApp> {
 
   void _buttonUnset() {
     HinaFlutterPlugin.userUnset("user_name");
+  }
+
+  void _buttonDelete() {
+    HinaFlutterPlugin.userDelete();
+  }
+
+  void _buttonFlush() {
+    HinaFlutterPlugin.flush();
+  }
+
+  void _buttonClear() {
+    HinaFlutterPlugin.clear();
   }
 }
