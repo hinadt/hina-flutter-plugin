@@ -72,9 +72,51 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
-        ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text(
+                  'test only',
+                ),
+                Text(
+                  'Run on $_platformVersion',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                TextButton(onPressed: _buttonSet, child: const Text('userSet')),
+                TextButton(onPressed: _buttonSetOnce, child: const Text('userSetOnce')),
+                TextButton(onPressed: _buttonAdd, child: const Text('userAdd')),
+                TextButton(onPressed: _buttonAppend, child: const Text('userAppend')),
+                TextButton(onPressed: _buttonUnset, child: const Text('setUnset')),
+              ],
+        )),
       ),
     );
+  }
+
+  void _buttonSet() {
+    var p = <String, dynamic>{};
+    p["user_name"] = '张三';
+    HinaFlutterPlugin.userSet(p);
+  }
+
+  void _buttonSetOnce() {
+    var p = <String, dynamic>{};
+    p["user_register_time"] = '10101010';
+    HinaFlutterPlugin.userSetOnce(p);
+  }
+
+  void _buttonAdd() {
+    var p = <String, num>{};
+    p['score'] = 8;
+    HinaFlutterPlugin.userAdd(p);
+  }
+
+  void _buttonAppend() {
+    List<String> values = ['哪吒脑海', '冰雪奇缘'];
+    HinaFlutterPlugin.userAppend("movie", values);
+  }
+
+  void _buttonUnset() {
+    HinaFlutterPlugin.userUnset("user_name");
   }
 }

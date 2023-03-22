@@ -108,7 +108,7 @@ class HinaFlutterPlugin {
     _channel.invokeMethod("userAdd", params);
   }
 
-  static void userAppend(String key, Set<String> values) {
+  static void userAppend(String key, List<String> values) {
     List<dynamic> params = [key, values];
     _channel.invokeMethod("userAppend", params);
   }

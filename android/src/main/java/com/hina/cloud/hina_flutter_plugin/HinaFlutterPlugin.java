@@ -9,7 +9,9 @@ import com.hinacloud.analytics.ICommonProperties;
 
 import org.json.JSONObject;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -255,7 +257,7 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
             return;
         }
         String key = (String) list.get(0);
-        Set<String> values = (Set<String>) list.get(1);
+        Set<String> values = new HashSet<>((Collection<? extends String>) list.get(1));
         HinaCloudSDK.getInstance().userAppend(key, values);
     }
 
