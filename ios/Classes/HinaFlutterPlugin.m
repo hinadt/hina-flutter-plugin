@@ -1,92 +1,3 @@
-//#import "HinaFlutterPlugin.h"
-//#import <objc/runtime.h>
-//#import <HinaCloudSDK/HinaCloudSDK.h>
-//
-//@implementation HinaFlutterPlugin
-//+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-//    FlutterMethodChannel* channel = [FlutterMethodChannel
-//                                     methodChannelWithName:@"hina_flutter_plugin"
-//                                     binaryMessenger:[registrar messenger]];
-//    HinaFlutterPlugin* instance = [[HinaFlutterPlugin alloc] init];
-//    [registrar addMethodCallDelegate:instance channel:channel];
-//}
-//
-//- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-//    if ([@"getPlatformVersion" isEqualToString:call.method]) {
-//        result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
-//    } else if ([@"track" isEqualToString:call.method]) {
-//        NSLog(@"---222");
-//        NSArray* arguments = (NSArray *)call.arguments;
-//        NSString* event = arguments[0];
-//        // argumentSetNSNullToNil(&event);
-//        NSDictionary* properties = arguments[1];
-//        // argumentSetNSNullToNil(&properties);
-//
-//        [[HinaCloudSDK sharedInstance] track:event withProperties:properties];
-//        NSLog(@"---2222--%@",properties);
-//        result(nil);
-//
-//    } else if ([@"init" isEqualToString:call.method]) {
-//        // flutter 初始化 iOS SDK
-//        NSLog(@"---111");
-//        NSArray* arguments = (NSArray *)call.arguments;
-//        NSDictionary *config = arguments[0];
-//        // argumentSetNSNullToNil(&config);
-//
-//        [HinaCloudSDK startWithConfigOptions:config];
-//
-//
-//        NSLog(@"---111--%@",config);
-//
-//        result(nil);
-//    } else {
-//        result(FlutterMethodNotImplemented);
-//    }
-//}
-//
-//
-//@end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
-// HinaFlutterPlugin.m
-// hina_flutter_plugin
-//
-// Created by  储强盛 on 2022/9/14.
-// Copyright © 2015-2022 Sensors Data Co., Ltd. All rights reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-//
-
 #import "HinaFlutterPlugin.h"
 #import <HinaCloudSDK/HinaCloudSDK.h>
 //#import "SAFlutterGlobalPropertyPlugin.h"
@@ -734,7 +645,7 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
     
     HNBuildOptions *options = [[HNBuildOptions alloc] initWithServerURL:serverURL launchOptions:nil];
     
-    NSNumber *autoTrack = config[@"autotrackTypes"];
+    NSNumber *autoTrack = config[@"autoTrackTypePolicy"];
     if ([autoTrack isKindOfClass:[NSNumber class]]) {
         options.autoTrackEventType = [autoTrack integerValue];
     }
