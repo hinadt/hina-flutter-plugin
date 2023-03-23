@@ -659,7 +659,7 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
     }
     
     //    ????
-    NSNumber *flushBulksize = config[@"flushPendSize"];
+    NSNumber *flushBulksize = config[@"setFlushPendSize"];
     if ([flushBulksize isKindOfClass:[NSNumber class]]) {
         options.flushPendSize = [flushBulksize integerValue];
     }
