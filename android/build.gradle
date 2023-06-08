@@ -47,7 +47,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
     }
 }
 
@@ -58,6 +58,6 @@ repositories {
 }
 
 dependencies {
-    api 'com.hinadt.hicloud.android:HinaCloudSDK:3.8.1'
+    api 'com.hinadt.hicloud.android:HinaCloudSDK:3.8.2'
 //    compileOnly files("$flutterRoot/bin/cache/artifacts/engine/android-arm/flutter.jar")
 }
