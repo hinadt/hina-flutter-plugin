@@ -58,7 +58,6 @@ repositories {
 }
 
 dependencies {
-//      api (name:'HinaCloudSDK-All-1.0.0', ext:'aar')
-    api 'com.hinadt.hicloud.android:HinaCloudSDK:1.0.0'
+    api 'com.hinadt.hicloud.android:HinaCloudSDK:3.8.1'
 //    compileOnly files("$flutterRoot/bin/cache/artifacts/engine/android-arm/flutter.jar")
 }
