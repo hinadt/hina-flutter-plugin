@@ -1,10 +1,37 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:hina_flutter_plugin/hina_flutter_plugin.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  if (kIsWeb) {
+    print('======== init web =========');
+    HinaFlutterPlugin.callMethodForWeb('init', {
+      'serverUrl': 'https://loanetc.mandao.com/hn?token=BHRfsTQS',
+      'showLog' : true,
+      //单页面配置，默认开启，若页面中有锚点设计，需要将该配置删除，否则触发锚点会多触发 H_pageview 事件
+      'isSinglePage': true,
+      'autoTrackConfig': {
+        //是否开启自动点击采集, true表示开启，自动采集 H_WebClick 事件
+        'clickAutoTrack': true,
+        //是否开启页面停留采集, true表示开启，自动采集 H_WebStay 事件
+        'stayAutoTrack': true,
+      },
+    });
+  } else {
+    HinaFlutterPlugin.initForMobile(
+        serverUrl: "https://loanetc.mandao.com/hn?token=BHRfsTQS",
+        flushInterval: 5000,
+        flushPendSize: 1,
+        enableLog: true,
+        autoTrackTypeList: {
+          HAAutoTrackType.APP_START,
+          HAAutoTrackType.APP_END
+        });
+  }
   runApp(const MyApp());
 }
 
@@ -24,15 +51,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    HinaFlutterPlugin.init(
-        serverUrl: "https://loanetc.mandao.com/hn?token=BHRfsTQS",
-        flushInterval: 5000,
-        flushPendSize: 1,
-        enableLog: true,
-        autoTrackTypeList: {
-          HAAutoTrackType.APP_START,
-          HAAutoTrackType.APP_END
-        });
     //
     initPlatformState();
     //
@@ -73,9 +91,6 @@ class _MyAppState extends State<MyApp> {
           child: Scrollbar(
             child: ListView(
               children: <Widget>[
-                const Text(
-                  'test only',
-                ),
                 Text(
                   'Run on $_platformVersion',
                   style: Theme.of(context).textTheme.headlineMedium,
@@ -83,8 +98,9 @@ class _MyAppState extends State<MyApp> {
                 Text(
                   'preSetProperties == $_presetProperties',
                 ),
-                TextButton(onPressed: _buttonGetPresetProperties, child: Text('preSetProperties')),
-                TextButton(onPressed: _buttonSetDeviceUId, child: const Text('set userUId == dededededededede')),
+                TextButton(onPressed: _buttonGetPresetProperties, child: const Text('getPresetProperties')),
+                TextButton(onPressed: _buttonGetDeviceUId, child: const Text('getDeviceUId')),
+                TextButton(onPressed: _buttonSetDeviceUId, child: const Text('set DeviceUId == dededededededede')),
                 TextButton(onPressed: _buttonSetUserUId, child: const Text('set userUId == 1234567890')),
                 TextButton(onPressed: _buttonTrack, child: const Text('track')),
                 TextButton(onPressed: _buttonTrackTimerStart, child: const Text('track timer start')),
@@ -92,7 +108,7 @@ class _MyAppState extends State<MyApp> {
                 TextButton(onPressed: _buttonSet, child: const Text('userSet')),
                 TextButton(onPressed: _buttonSetOnce, child: const Text('userSetOnce')),
                 TextButton(onPressed: _buttonAdd, child: const Text('userAdd')),
-                TextButton(onPressed: _buttonAppend, child: const Text('userAppend')),
+                TextButton(onPressed: _buttonAppend, child: const Text('userAppend(待验证)')),
                 TextButton(onPressed: _buttonUnset, child: const Text('userUnset')),
                 TextButton(onPressed: _buttonDelete, child: const Text('userDelete')),
                 TextButton(onPressed: _buttonFlush, child: const Text('flush')),
@@ -103,11 +119,12 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-  void _buttonGetPresetProperties() async {
-    var result = await HinaFlutterPlugin.getPresetProperties();
-    setState(() {
-      _presetProperties = result;
-    });
+  void _buttonGetPresetProperties() {
+    HinaFlutterPlugin.getPresetProperties().then((value) => print(value));
+  }
+
+  void _buttonGetDeviceUId() {
+    HinaFlutterPlugin.getDeviceUId().then((value) => print(value));
   }
 
   void _buttonSetDeviceUId() {
@@ -152,8 +169,9 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _buttonAppend() {
-    List<String> values = ['哪吒脑海', '冰雪奇缘'];
-    HinaFlutterPlugin.userAppend("movie", values);
+    // List<String> values = ['哪吒脑海', '冰雪奇缘'];
+    // HinaFlutterPlugin.userAppend("movie", values);
+    // todo 统一json参数
   }
 
   void _buttonUnset() {

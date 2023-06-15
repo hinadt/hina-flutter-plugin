@@ -1,16 +1,23 @@
+import 'dart:convert';
 import 'dart:html' as html show window;
-
+import 'dart:js' as js;
 import 'package:flutter/services.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 import 'hina_flutter_plugin_platform_interface.dart';
 
 class HinaFlutterPluginWeb extends HinaFlutterPluginPlatform {
+
+  js.JsObject hina = js.context['hinaDataStatistic'];
+
   HinaFlutterPluginWeb();
 
   static void registerWith(Registrar registrar) {
     // HinaFlutterPluginPlatform.instance = HinaFlutterPluginWeb();
-    const MethodChannel channel = MethodChannel("hina_flutter_plugin"); //通讯channel
+    MethodChannel channel = MethodChannel("hina_flutter_plugin",
+      StandardMethodCodec(),
+      registrar,
+    ); //通讯channel
     final webPlugin = HinaFlutterPluginWeb();
     channel.setMethodCallHandler(webPlugin.handler);// 消息处理
   }
@@ -23,78 +30,12 @@ class HinaFlutterPluginWeb extends HinaFlutterPluginPlatform {
   }
 
   Future<dynamic> handler(MethodCall call) {
-    List list = call.arguments;
-    switch (call.method) {
-      case "getPlatformVersion":
-        return Future(() => getPlatformVersion());
-        break;
-      case "init":
-        // init(list, result);
-        break;
-      case "track":
-        // track(list);
-        break;
-      case "trackTimerStart":
-        // trackTimerStart(list);
-        break;
-      case "trackTimerEnd":
-        // trackTimerEnd(list);
-        break;
-      case "getPresetProperties":
-        // getPresetProperties(result);
-        break;
-      case "registerCommonProperties":
-        // registerCommonProperties(list);
-        break;
-      case "userSet":
-        // userSet(list);
-        break;
-      case "userSetOnce":
-        // userSetOnce(list);
-        break;
-      case "userAdd":
-        // userAdd(list);
-        break;
-      case "userAppend":
-        // userAppend(list);
-        break;
-      case "userUnset":
-        // userUnset(list);
-        break;
-      case "userDelete":
-        // userDelete();
-        break;
-      case "setUserUId":
-        // setUserUId(list);
-        break;
-      case "setPushUId":
-        // setPushUId(list);
-        break;
-      case "setDeviceUId":
-        // setDeviceUId(list);
-        break;
-      case "getDeviceUId":
-        // getDeviceUId(result);
-        break;
-      case "setFlushPendSize":
-        // setFlushPendSize(list);
-        break;
-      case "setFlushInterval":
-        // setFlushInterval(list);
-        break;
-      case "setFlushNetworkPolicy":
-        // setFlushNetworkPolicy(list);
-        break;
-      case "flush":
-        // flush();
-        break;
-      case "clear":
-        // clear();
-        break;
-      default:
-        // result.notImplemented();
-        break;
+    print('============ call method：${call.method}');
+    print('============ call arguments：${call.arguments}');
+    if (call.method == 'getPlatformVersion') {
+      final version = html.window.navigator.userAgent;
+      return Future.value(version);
     }
-    return Future(() => '');
+    return Future(() => hina.callMethod(call.method, call.arguments));
   }
 }

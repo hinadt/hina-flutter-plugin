@@ -22,7 +22,7 @@ class HinaFlutterPlugin {
   static MethodChannel get _channel =>
       ChannelManager.getInstance().methodChannel;
 
-  static Future<void> init(
+  static Future<void> initForMobile(
       {required String? serverUrl,
       int flushInterval = 15000,
       int flushPendSize = 100,
@@ -51,6 +51,11 @@ class HinaFlutterPlugin {
     }
     List<dynamic> params = [initConfig];
     await _channel.invokeMethod("init", params);
+  }
+
+  static void callMethodForWeb(String method, [ dynamic arguments ]) {
+    List<dynamic> params = [arguments];
+    _channel.invokeMethod(method, params);
   }
 
   static void track(String eventName, Map<String, dynamic>? properties) {
@@ -106,11 +111,6 @@ class HinaFlutterPlugin {
     }
     List<dynamic> params = [userProperties];
     _channel.invokeMethod("userAdd", params);
-  }
-
-  static void userAppend(String key, List<String> values) {
-    List<dynamic> params = [key, values];
-    _channel.invokeMethod("userAppend", params);
   }
 
   static void userUnset(String key) {
