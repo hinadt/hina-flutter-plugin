@@ -35,6 +35,11 @@ class HinaFlutterPluginWeb extends HinaFlutterPluginPlatform {
     if (call.method == 'getPlatformVersion') {
       final version = html.window.navigator.userAgent;
       return Future.value(version);
+    } else if (call.method == 'getPresetProperties') {
+      js.JsObject object = hina.callMethod('getPresetProperties');
+      String result = js.context['JSON'].callMethod('stringify', [object]);
+      Map<String, dynamic> map = json.decode(result);
+      return Future.value(map);
     }
     return Future(() => hina.callMethod(call.method, call.arguments));
   }

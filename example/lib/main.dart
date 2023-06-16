@@ -9,7 +9,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
     print('======== init web =========');
-    HinaFlutterPlugin.callMethodForWeb('init', {
+    HinaFlutterPlugin.callMethodForWeb('init', [{
       'serverUrl': 'https://loanetc.mandao.com/hn?token=BHRfsTQS',
       'showLog' : true,
       //单页面配置，默认开启，若页面中有锚点设计，需要将该配置删除，否则触发锚点会多触发 H_pageview 事件
@@ -19,8 +19,8 @@ void main() async {
         'clickAutoTrack': true,
         //是否开启页面停留采集, true表示开启，自动采集 H_WebStay 事件
         'stayAutoTrack': true,
-      },
-    });
+      }
+    }]);
   } else {
     HinaFlutterPlugin.initForMobile(
         serverUrl: "https://loanetc.mandao.com/hn?token=BHRfsTQS",
@@ -94,9 +94,6 @@ class _MyAppState extends State<MyApp> {
                 Text(
                   'Run on $_platformVersion',
                   style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                Text(
-                  'preSetProperties == $_presetProperties',
                 ),
                 TextButton(onPressed: _buttonGetPresetProperties, child: const Text('getPresetProperties')),
                 TextButton(onPressed: _buttonGetDeviceUId, child: const Text('getDeviceUId')),

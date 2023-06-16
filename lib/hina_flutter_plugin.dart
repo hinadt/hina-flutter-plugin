@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 enum HANetworkType {
@@ -53,14 +54,15 @@ class HinaFlutterPlugin {
     await _channel.invokeMethod("init", params);
   }
 
-  static void callMethodForWeb(String method, [ dynamic arguments ]) {
-    List<dynamic> params = [arguments];
-    _channel.invokeMethod(method, params);
+  static Future<dynamic> callMethodForWeb(String method, [ List<dynamic>? arguments ]) {
+    return _channel.invokeMethod(method, arguments);
   }
 
-  static void track(String eventName, Map<String, dynamic>? properties) {
-    properties = properties == null ? {} : {...properties};
-    List<dynamic> params = [eventName, properties];
+  static void track(String eventName, [ Map<String, dynamic>? properties ]) {
+    List<dynamic> params = [eventName];
+    if (properties != null && properties.isNotEmpty) {
+      params.add({...properties});
+    }
     _channel.invokeMethod('track', params);
   }
 
@@ -70,9 +72,11 @@ class HinaFlutterPlugin {
   }
 
   static void trackTimerEnd(
-      String eventName, Map<String, dynamic>? properties) {
-    properties = properties == null ? {} : {...properties};
-    List<dynamic> params = [eventName, properties];
+      String eventName, [ Map<String, dynamic>? properties ]) {
+    List<dynamic> params = [eventName];
+    if (properties != null && properties.isNotEmpty) {
+      params.add({...properties});
+    }
     _channel.invokeMethod('trackTimerEnd', params);
   }
 
