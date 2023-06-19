@@ -59,10 +59,8 @@ class HinaFlutterPlugin {
   }
 
   static void track(String eventName, [ Map<String, dynamic>? properties ]) {
-    List<dynamic> params = [eventName];
-    if (properties != null && properties.isNotEmpty) {
-      params.add({...properties});
-    }
+    properties = properties == null ? {} : {...properties};
+    List<dynamic> params = [eventName, properties];
     _channel.invokeMethod('track', params);
   }
 
@@ -73,10 +71,8 @@ class HinaFlutterPlugin {
 
   static void trackTimerEnd(
       String eventName, [ Map<String, dynamic>? properties ]) {
-    List<dynamic> params = [eventName];
-    if (properties != null && properties.isNotEmpty) {
-      params.add({...properties});
-    }
+    properties = properties == null ? {} : {...properties};
+    List<dynamic> params = [eventName, properties];
     _channel.invokeMethod('trackTimerEnd', params);
   }
 
