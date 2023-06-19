@@ -17,7 +17,7 @@ A new Flutter project.
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
   s.platform = :ios, '8.0'
-  s.dependency 'HinaCloudSDK', ">= 1.0.3"
+  s.dependency 'HinaCloudSDK', ">= 3.3.1"
   # # 你可以像这样依赖你自己的框架:写入plugin的podspec文件：
   # s.ios.vendored_frameworks = 'libs/HinaCloudSDK.framework'
   # s.vendored_frameworks = 'HinaCloudSDK.framework'
