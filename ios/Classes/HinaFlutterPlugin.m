@@ -667,10 +667,10 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
     if ([enableLog isKindOfClass:[NSNumber class]]) {
         options.enableLog = [enableLog boolValue];
     }
-    NSNumber *enableEncrypt = config[@"encrypt"];
-    if ([enableEncrypt isKindOfClass:[NSNumber class]]) {
-        options.enableEncrypt = [enableEncrypt boolValue];
-    }
+//    NSNumber *enableEncrypt = config[@"encrypt"];
+//    if ([enableEncrypt isKindOfClass:[NSNumber class]]) {
+//        options.enableEncrypt = [enableEncrypt boolValue];
+//    }
     
     //    ????
     NSNumber *enableJavascriptBridge = config[@"enableJSBridge"];
@@ -683,19 +683,19 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
         options.maxCacheSize = [iOSConfigs[@"maxCacheSizeForIOS"] integerValue];
     }
     
-    NSNumber *enableHeatMap = config[@"heat_map"];
-    if ([enableHeatMap isKindOfClass:[NSNumber class]]) {
-        options.enableHeatMap = [enableHeatMap boolValue];
-    }
-    NSDictionary *visualizedSettings = config[@"visualized"];
-    if ([visualizedSettings isKindOfClass:[NSDictionary class]]) {
-        if ([visualizedSettings[@"autoTrack"] isKindOfClass:[NSNumber class]]) {
-            options.enableVisualizedAutoTrack = [visualizedSettings[@"autoTrack"] boolValue];
-        }
-        if ([visualizedSettings[@"properties"] isKindOfClass:[NSNumber class]]) {
-            options.enableVisualizedProperties = [visualizedSettings[@"properties"] boolValue];
-        }
-    }
+//    NSNumber *enableHeatMap = config[@"heat_map"];
+//    if ([enableHeatMap isKindOfClass:[NSNumber class]]) {
+//        options.enableHeatMap = [enableHeatMap boolValue];
+//    }
+//    NSDictionary *visualizedSettings = config[@"visualized"];
+//    if ([visualizedSettings isKindOfClass:[NSDictionary class]]) {
+//        if ([visualizedSettings[@"autoTrack"] isKindOfClass:[NSNumber class]]) {
+//            options.enableVisualizedAutoTrack = [visualizedSettings[@"autoTrack"] boolValue];
+//        }
+//        if ([visualizedSettings[@"properties"] isKindOfClass:[NSNumber class]]) {
+//            options.enableVisualizedProperties = [visualizedSettings[@"properties"] boolValue];
+//        }
+//    }
     
     //    NSDictionary *properties = config[@"globalProperties"];
     //    if ([properties isKindOfClass:NSDictionary.class]) {
