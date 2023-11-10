@@ -8,10 +8,10 @@ buildscript {
         maven {
             url 'https://repo1.maven.org/maven2/'
         }
-        maven {
-            allowInsecureProtocol = true
-            url 'http://10.0.20.242/nexus/content/repositories/snapshots/'
-        }
+//        maven {
+//            allowInsecureProtocol = true
+//            url 'http://10.0.20.242/nexus/content/repositories/snapshots/'
+//        }
     }
 
     dependencies {
@@ -26,10 +26,10 @@ rootProject.allprojects {
         maven {
             url 'https://repo1.maven.org/maven2/'
         }
-        maven {
-            allowInsecureProtocol = true
-            url 'http://10.0.20.242/nexus/content/repositories/snapshots/'
-        }
+//        maven {
+//            allowInsecureProtocol = true
+//            url 'http://10.0.20.242/nexus/content/repositories/snapshots/'
+//        }
         flatDir {
             dirs project(':hina_flutter_plugin').file('libs')
         }
