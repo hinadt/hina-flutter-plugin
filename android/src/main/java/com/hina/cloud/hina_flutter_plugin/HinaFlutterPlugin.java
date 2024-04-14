@@ -4,8 +4,9 @@ import android.app.Activity;
 
 import androidx.annotation.NonNull;
 
-import com.hinacloud.analytics.HinaCloudSDK;
-import com.hinacloud.analytics.ICommonProperties;
+import com.hina.analytics.HinaCloudSDK;
+import com.hina.analytics.HinaConfig;
+import com.hina.analytics.ICommonProperties;
 
 import org.json.JSONObject;
 
@@ -130,7 +131,7 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
             Object autoTrackTypePolicy = map.get("autoTrackTypePolicy");
             Object networkTypePolicy = map.get("networkTypePolicy");
 
-            HinaCloudSDK.Builder builder = new HinaCloudSDK.Builder();
+            HinaConfig.Builder builder = new HinaConfig.Builder();
 
             if (serverUrl != null) {
                 builder.setServerUrl((String) serverUrl);
@@ -164,7 +165,7 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
                 builder.setNetworkTypePolicy((Integer) networkTypePolicy);
             }
 
-            builder.build(mActivity);
+            HinaCloudSDK.init(mActivity, builder.build());
 
         } catch (Exception e) {
             e.printStackTrace();
