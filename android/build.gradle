@@ -8,14 +8,10 @@ buildscript {
         maven {
             url 'https://repo1.maven.org/maven2/'
         }
-//        maven {
-//            allowInsecureProtocol = true
-//            url 'http://10.0.20.242/nexus/content/repositories/snapshots/'
-//        }
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.0'
+        classpath 'com.android.tools.build:gradle:7.3.0'
     }
 }
 
@@ -25,13 +21,6 @@ rootProject.allprojects {
         mavenCentral()
         maven {
             url 'https://repo1.maven.org/maven2/'
-        }
-//        maven {
-//            allowInsecureProtocol = true
-//            url 'http://10.0.20.242/nexus/content/repositories/snapshots/'
-//        }
-        flatDir {
-            dirs project(':hina_flutter_plugin').file('libs')
         }
     }
 }
@@ -51,13 +40,7 @@ android {
     }
 }
 
-repositories {
-    flatDir {
-        dirs 'libs'
-    }
-}
-
 dependencies {
-    api 'com.hinadt.hicloud.android:HinaCloudSDK:3.9.0'
+    api 'com.hinadt.hicloud.android:HinaCloudSDK:4.1.0'
 //    compileOnly files("$flutterRoot/bin/cache/artifacts/engine/android-arm/flutter.jar")
 }
