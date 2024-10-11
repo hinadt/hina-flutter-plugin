@@ -2,15 +2,15 @@ PODS:
   - Flutter (1.0.0)
   - hina_flutter_plugin (0.0.1):
     - Flutter
-    - HinaCloudSDK (>= 3.3.1)
-  - HinaCloudSDK (3.3.1)
+    - HinaCloudSDK (>= 4.0.5)
+  - HinaCloudSDK (4.0.5)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - hina_flutter_plugin (from `.symlinks/plugins/hina_flutter_plugin/ios`)
 
 SPEC REPOS:
-  https://github.com/CocoaPods/Specs.git:
+  trunk:
     - HinaCloudSDK
 
 EXTERNAL SOURCES:
@@ -20,10 +20,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/hina_flutter_plugin/ios"
 
 SPEC CHECKSUMS:
-  Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  hina_flutter_plugin: 8af7cfb86a4f0988a0033859164904621a7ae663
-  HinaCloudSDK: 7eefd0915f3ab70f1898a638036d1ebffc1b0c97
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  hina_flutter_plugin: 485307edd7a11e70db0105da3c4c61238876f2aa
+  HinaCloudSDK: 505bc0b40d9a4e3028d2420377a7eab24a806bd5
 
-PODFILE CHECKSUM: 4efc87c230502a7f84f0b54db002e16143865914
+PODFILE CHECKSUM: 77c34763c0a89d9d735a35627f6058fcfbde630c
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1

@@ -277,6 +277,9 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
     }  else if ([method isEqualToString:@"getLoginId"]){
         NSString *loginId = [self getLoginId];
         result(loginId);
+    }   else if ([method isEqualToString:@"getUserUId"]){
+        NSString *loginId = [self getLoginId];
+        result(loginId);
     }  else if ([method isEqualToString:@"setDeviceUId"]){
         NSString *distinctId = arguments[0];
         argumentSetNSNullToNil(&distinctId);
@@ -588,7 +591,7 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
 }
 
 - (NSString *)getLoginId {
-    return HinaCloudSDK.sharedInstance.loginId;
+    return HinaCloudSDK.sharedInstance.userUId;
 }
 
 - (void)identify:(NSString *)distinctId {
