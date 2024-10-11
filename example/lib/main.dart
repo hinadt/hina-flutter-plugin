@@ -23,7 +23,7 @@ void main() async {
     }]);
   } else {
     HinaFlutterPlugin.initForMobile(
-        serverUrl: "https://loanetc.mandao.com/hn?token=BHRfsTQS",
+        serverUrl: "https://test-hicloud.hinadt.com/gateway/hina-cloud-engine/ha?project=new_category&token=ui5scybH",
         flushInterval: 5000,
         flushPendSize: 1,
         enableLog: true,
@@ -105,7 +105,7 @@ class _MyAppState extends State<MyApp> {
                 TextButton(onPressed: _buttonSet, child: const Text('userSet')),
                 TextButton(onPressed: _buttonSetOnce, child: const Text('userSetOnce')),
                 TextButton(onPressed: _buttonAdd, child: const Text('userAdd')),
-                TextButton(onPressed: _buttonAppend, child: const Text('userAppend(待验证)')),
+                TextButton(onPressed: _buttonAppend, child: const Text('userAppend')),
                 TextButton(onPressed: _buttonUnset, child: const Text('userUnset')),
                 TextButton(onPressed: _buttonDelete, child: const Text('userDelete')),
                 TextButton(onPressed: _buttonFlush, child: const Text('flush')),
@@ -133,8 +133,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _buttonTrack() {
-    HinaFlutterPlugin.track('clickPro',
-        {'ProductID': '123456', 'ProductCatalog': 'Laptop Computer'});
+    HinaFlutterPlugin.track('click_test',
+        {"strList":["aaa","bbb"],'numList': [1,2,3], 'objList': [{'a':'b'},{"c":1}]});
   }
 
   void _buttonTrackTimerStart() {
@@ -166,9 +166,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _buttonAppend() {
-    // List<String> values = ['哪吒脑海', '冰雪奇缘'];
-    // HinaFlutterPlugin.userAppend("movie", values);
-    // todo 统一json参数
+    List<String> values = ['西游记', '三国演义'];
+    HinaFlutterPlugin.userAppend("books", values);
   }
 
   void _buttonUnset() {
