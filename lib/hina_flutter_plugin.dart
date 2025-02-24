@@ -132,6 +132,10 @@ class HinaFlutterPlugin {
     _channel.invokeMethod("setUserUId", params);
   }
 
+  static void cleanUserUId() {
+    _channel.invokeMethod("cleanUserUId");
+  }
+
   static void setPushUId(String pushTypeKey, String pushUId) {
     List<String> params = [pushTypeKey, pushUId];
     _channel.invokeMethod("setPushUId", params);

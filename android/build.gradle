@@ -40,7 +40,22 @@ android {
     }
 }
 
+////获取local.properties配置文件
+//def localProperties = new Properties()
+//def localPropertiesFile = rootProject.file('local.properties')
+//if (localPropertiesFile.exists()) {
+//    localPropertiesFile.withReader('UTF-8') { reader ->
+//        localProperties.load(reader)
+//    }
+//}
+//
+////获取flutter的sdk路径
+//def flutterRoot = localProperties.getProperty('flutter.sdk')
+//if (flutterRoot == null) {
+//    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+//}
+
 dependencies {
-    api 'com.hinadt.hicloud.android:HinaCloudSDK:4.1.5'
+    api 'com.hinadt.hicloud.android:HinaCloudSDK:4.1.6'
 //    compileOnly files("$flutterRoot/bin/cache/artifacts/engine/android-arm/flutter.jar")
 }

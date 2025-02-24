@@ -99,6 +99,7 @@ class _MyAppState extends State<MyApp> {
                 TextButton(onPressed: _buttonGetDeviceUId, child: const Text('getDeviceUId')),
                 TextButton(onPressed: _buttonSetDeviceUId, child: const Text('set DeviceUId == dededededededede')),
                 TextButton(onPressed: _buttonSetUserUId, child: const Text('set userUId == 1234567890')),
+                TextButton(onPressed: _buttonCleanUserUId, child: const Text('cleanUserUId')),
                 TextButton(onPressed: _buttonTrack, child: const Text('track')),
                 TextButton(onPressed: _buttonTrackTimerStart, child: const Text('track timer start')),
                 TextButton(onPressed: _buttonTrackTimerEnd, child: const Text('track timer end')),
@@ -130,6 +131,10 @@ class _MyAppState extends State<MyApp> {
 
   void _buttonSetUserUId() {
     HinaFlutterPlugin.setUserUId('1234567890');
+  }
+
+  void _buttonCleanUserUId() {
+    HinaFlutterPlugin.cleanUserUId();
   }
 
   void _buttonTrack() {

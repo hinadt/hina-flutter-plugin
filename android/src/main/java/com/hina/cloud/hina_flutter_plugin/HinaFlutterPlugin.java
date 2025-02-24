@@ -89,6 +89,9 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
             case "setUserUId":
                 setUserUId(list);
                 break;
+            case "cleanUserUId":
+                cleanUserUId();
+                break;
             case "setPushUId":
                 setPushUId(list);
                 break;
@@ -280,6 +283,10 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
         }
         String userId = (String) list.get(0);
         HinaCloudSDK.getInstance().setUserUId(userId);
+    }
+
+    private void cleanUserUId() {
+        HinaCloudSDK.getInstance().cleanUserUId();
     }
 
     private void setPushUId(List list) {
