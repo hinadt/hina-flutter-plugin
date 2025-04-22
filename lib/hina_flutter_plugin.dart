@@ -1,6 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import 'package:hina_flutter_plugin/hina_autotrack.dart';
+import 'package:hina_flutter_plugin/hina_autotrack_config.dart';
+
+export 'package:hina_flutter_plugin/autotrack/page_view/hn_pageview_observer.dart';
+export 'package:hina_flutter_plugin/hina_autotrack_config.dart';
+
 enum HANetworkType {
   TYPE_NONE,
   TYPE_2G,
@@ -32,6 +38,7 @@ class HinaFlutterPlugin {
       int maxCacheSizeForAndroid = 32 * 1024 * 1024,
       int maxCacheSizeForIOS = 10000,
       Set<HAAutoTrackType>? autoTrackTypeList,
+      HNAutoTrackConfig? autoTrackConfig,
       Set<HANetworkType>? networkTypeList}) async {
     Map<String, dynamic> initConfig = {
       "serverUrl": serverUrl,
@@ -45,6 +52,9 @@ class HinaFlutterPlugin {
     int autoTrackTypePolicy = getAutoTrackTypes(autoTrackTypeList);
     if (autoTrackTypePolicy != -1) {
       initConfig["autoTrackTypePolicy"] = autoTrackTypePolicy;
+    }
+    if (autoTrackConfig != null) {
+      HNAutoTrackManager.instance.config = autoTrackConfig;
     }
     int networkTypePolicy = getNetworkTypes(networkTypeList);
     if (networkTypePolicy != -1) {
@@ -196,9 +206,11 @@ class HinaFlutterPlugin {
             break;
           case HAAutoTrackType.APP_CLICK:
             result |= 1 << 2;
+            HNAutoTrackManager.instance.enableElementClick(true);
             break;
           case HAAutoTrackType.APP_VIEW_SCREEN:
             result |= 1 << 3;
+            HNAutoTrackManager.instance.enablePageView(true);
             break;
         }
       }
