@@ -670,6 +670,12 @@ static NSNotificationName const kSAFlutterPluginVisualizedStatusChangedNotificat
     if ([enableLog isKindOfClass:[NSNumber class]]) {
         options.enableLog = [enableLog boolValue];
     }
+    // 添加 crash 收集开关
+     NSNumber *enableTrackAppCrash = config[@"enableTrackAppCrash"];
+    if ([enableTrackAppCrash isKindOfClass:[NSNumber class]]) {
+        options.enableTrackAppCrash = [enableTrackAppCrash boolValue];
+    }
+
 //    NSNumber *enableEncrypt = config[@"encrypt"];
 //    if ([enableEncrypt isKindOfClass:[NSNumber class]]) {
 //        options.enableEncrypt = [enableEncrypt boolValue];
