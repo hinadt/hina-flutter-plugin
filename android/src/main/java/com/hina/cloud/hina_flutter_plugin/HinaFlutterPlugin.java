@@ -130,6 +130,7 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
             Object flushPendSize = map.get("flushPendSize");
             Object enableLog = map.get("enableLog");
             Object enableJSBridge = map.get("enableJSBridge");
+            Object enableTrackAppCrash = map.get("enableTrackAppCrash");
             Object maxCacheSizeForAndroid = map.get("maxCacheSizeForAndroid");
             Object autoTrackTypePolicy = map.get("autoTrackTypePolicy");
             Object networkTypePolicy = map.get("networkTypePolicy");
@@ -154,6 +155,10 @@ public class HinaFlutterPlugin implements FlutterPlugin, MethodCallHandler, Acti
 
             if (enableJSBridge != null) {
                 builder.enableJSBridge((Boolean) enableJSBridge);
+            }
+
+            if (enableTrackAppCrash != null && (Boolean) enableTrackAppCrash) {
+                builder.enableTrackAppCrash();
             }
 
             if (maxCacheSizeForAndroid != null) {

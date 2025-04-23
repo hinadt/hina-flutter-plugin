@@ -35,6 +35,7 @@ class HinaFlutterPlugin {
       int flushPendSize = 100,
       bool enableLog = false,
       bool enableJSBridge = false,
+      bool enableTrackAppCrash = false,
       int maxCacheSizeForAndroid = 32 * 1024 * 1024,
       int maxCacheSizeForIOS = 10000,
       Set<HAAutoTrackType>? autoTrackTypeList,
@@ -59,6 +60,9 @@ class HinaFlutterPlugin {
     int networkTypePolicy = getNetworkTypes(networkTypeList);
     if (networkTypePolicy != -1) {
       initConfig["networkTypePolicy"] = networkTypePolicy;
+    }
+    if (enableTrackAppCrash) {
+      initConfig["enableTrackAppCrash"] = enableTrackAppCrash;
     }
     List<dynamic> params = [initConfig];
     await _channel.invokeMethod("init", params);

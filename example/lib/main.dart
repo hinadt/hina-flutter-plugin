@@ -31,6 +31,7 @@ void main() async {
         flushInterval: 5000,
         flushPendSize: 1,
         enableLog: true,
+        enableTrackAppCrash: true,
         autoTrackConfig: HNAutoTrackConfig(pageConfigs: [
           HNAutoTrackPageConfig<HomeScreen>(title: '首页www', screenName: '首页home', properties: {'pageId':'home001'}, ignore: false)
         ]),
